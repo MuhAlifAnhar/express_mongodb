@@ -24,8 +24,14 @@ app.get('/', (req, res) => {
 })
 
 app.get('/products', async (req, res) => {
-    const products = await Product.find({})
-    res.render('products/index', { products });
+    const { size } = req.query;
+    if(size) {
+        const products = await Product.find({ size });
+        res.render('products/index', { products, size });
+    }else {
+        const products = await Product.find({})
+        res.render('products/index', { products, size: 'All' });
+    }
 })
 
 app.get('/products/create', (req, res) => {
